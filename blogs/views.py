@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.http import HttpResponseNotFound
 from django.shortcuts import render
 from blogs.models import Post

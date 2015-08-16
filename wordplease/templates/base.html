@@ -16,8 +16,13 @@
         </div>
         <div>
             <ul class="nav navbar-nav">
-
                 <li> <a href="{% url 'home' %}">Home</a></li>
+                {% if user.is_authenticated %}
+                   <li> <a href="{% url 'user_logout' %}">Salir</a></li>
+                {% else %}
+                  <li>  <a href="{% url 'user_login' %}">Entrar</a></li>
+                  <li>  <a href="{% url 'user_signup' %}">Signup</a></li>
+                {% endif %}
             </ul>
         </div>
     </nav>
