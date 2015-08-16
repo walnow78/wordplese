@@ -2,7 +2,8 @@
 from django.http import HttpResponseNotFound
 from django.shortcuts import render
 from blogs.models import Post
-from django.views.generic import View
+from django.views.generic import View, ListView
+from django.contrib.auth.models import User
 
 class HomeView(View):
 
@@ -29,3 +30,21 @@ class PostDetailView(View):
             return render(request, 'blogs/post_detail.html', context)
         else:
             return HttpResponseNotFound("No existe el post")
+
+class BlogListView(View):
+    def get(self, request):
+        blogs = User.objects.all()
+        context = {
+            "blogs" : blogs
+        }
+        return render(request, 'blogs/blogs.html', context)
+
+class BlogListDetailView(View):
+    def get(self, request, user):
+        possible_posts = Post.objects.filter(owner__username=self.kwargs['user'])
+
+        context = {
+            'post_list': possible_posts
+        }
+
+        return render(request, 'blogs/home.html', context)
