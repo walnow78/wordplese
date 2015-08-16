@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %} {{ post.title }} {% endblock %}
+
+{% block section %}
+
+    <h1>{{ post.title }}</h1>
+    <img src="{{ post.url }}" alt="{{ post.url }}" height="150">
+    <p> {{ post.summary }} </p>
+    <p>
+        <strong>Autor:</strong>
+        {{ post.owner.first_name }}
+        {{ post.owner.last_name }}
+    </p>
+
+{% endblock %}
