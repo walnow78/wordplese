@@ -1,3 +1,4 @@
+from blogs.validators import badwords_detector
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -9,7 +10,7 @@ class Category(models.Model):
 
 class Post(models.Model):
     owner = models.ForeignKey(User)
-    title = models.TextField(max_length=25, default="")
+    title = models.TextField(max_length=25, default="", validators=[badwords_detector])
     resume = models.TextField(max_length=100, default="")
     content = models.TextField(default="")
     url = models.URLField(blank=True, default="")
