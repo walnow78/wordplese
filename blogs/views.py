@@ -1,8 +1,12 @@
 # -*- coding: utf-8 -*-
+from blogs.forms import PostForm
+from django.contrib.auth.decorators import login_required
+from django.core.urlresolvers import reverse
 from django.http import HttpResponseNotFound
 from django.shortcuts import render
 from blogs.models import Post
-from django.views.generic import View, ListView
+from django.utils.decorators import method_decorator
+from django.views.generic import View
 from django.contrib.auth.models import User
 
 class HomeView(View):
@@ -48,3 +52,44 @@ class BlogListDetailView(View):
         }
 
         return render(request, 'blogs/home.html', context)
+
+class CreatePostView(View):
+
+    @method_decorator(login_required())
+    def get(self, request):
+
+        success_message = ''
+        form = PostForm()
+
+        context = {
+            'form': form,
+            'success_message': success_message
+        }
+
+        return render(request, 'blogs/post_create.html', context)
+
+    @method_decorator(login_required())
+    def post(self, request):
+        success_message = ''
+
+        # Creo un post vacío con el usuario para pasarselo al formulario
+        # De este modo oculto el campo owner y lo cargo automaticamente.
+        post_with_owner = Post()
+        post_with_owner.owner = request.user
+        form = PostForm(request.POST, instance=post_with_owner)
+
+        if form.is_valid():
+            # Creo el post con los datos del formulario y lo almaceno en nueva new_post
+            new_post = form.save()
+            form = PostForm()
+            success_message = 'Guardado con exito!'
+            success_message += '<a href="{0}">'.format(reverse('post', args=[new_post.pk]))
+            success_message += 'Ver post'
+            success_message += '</a>'
+
+        context = {
+            'form': form,
+            'success_message': success_message
+        }
+
+        return render(request, 'blogs/post_create.html', context)

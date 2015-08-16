@@ -20,6 +20,7 @@
                 <li><a href="{% url 'blog_list' %}">Blogs</a></li>
                 {% if user.is_authenticated %}
                    <li> <a href="{% url 'user_logout' %}">Salir</a></li>
+                   <li> <a href="{% url 'post_create' %}">Nuevo post</a></li>
                 {% else %}
                   <li>  <a href="{% url 'user_login' %}">Entrar</a></li>
                   <li>  <a href="{% url 'user_signup' %}">Signup</a></li>
