@@ -2,6 +2,7 @@ from django.conf.urls import include, url
 from django.contrib import admin
 from blogs.views import HomeView, PostDetailView, BlogListView, BlogListDetailView, CreatePostView, PostCurrentUser
 from users.views import LoginView, LogoutView, SignupView
+from users.api import UserListAPI, UserDetailAPI
 from django.contrib.auth.decorators import login_required
 
 urlpatterns = [
@@ -17,9 +18,15 @@ urlpatterns = [
     url(r'^posts/(?P<pk>[0-9]+)$', PostDetailView.as_view(), name='post'),
     url(r'^posts/new$', CreatePostView.as_view(), name='post_create'),
     url(r'^myposts/$', login_required(PostCurrentUser.as_view()), name='posts_current_user'),
+
     # Users URL
 
     url(r'^login$', LoginView.as_view(), name='user_login'),
     url(r'^logout$', LogoutView.as_view(), name='user_logout'),
     url(r'^signup$', SignupView.as_view(), name='user_signup'),
+
+    # User API
+
+    url(r'^api/1.0/users/$', UserListAPI.as_view(), name='user_list_api'),
+    url(r'^api/1.0/users/(?P<pk>[0-9]+)$', UserDetailAPI.as_view(), name='user_detail_api'),
 ]

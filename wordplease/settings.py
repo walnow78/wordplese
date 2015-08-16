@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     'blogs',
     'wordplease',
     'users',
+    'rest_framework',
 )
 
 MIDDLEWARE_CLASSES = (
