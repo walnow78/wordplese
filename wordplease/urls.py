@@ -1,6 +1,6 @@
 from django.conf.urls import include, url
 from django.contrib import admin
-from blogs.views import HomeView, PostDetailView, BlogListView, BlogListDetailView, CreatePostView
+from blogs.views import HomeView, PostDetailView, BlogListView, BlogListDetailView, CreatePostView, PostCurrentUser
 from users.views import LoginView, LogoutView, SignupView
 from django.contrib.auth.decorators import login_required
 
@@ -16,6 +16,7 @@ urlpatterns = [
     url(r'^$', HomeView.as_view(), name='home'),
     url(r'^posts/(?P<pk>[0-9]+)$', PostDetailView.as_view(), name='post'),
     url(r'^posts/new$', CreatePostView.as_view(), name='post_create'),
+    url(r'^myposts/$', login_required(PostCurrentUser.as_view()), name='posts_current_user'),
     # Users URL
 
     url(r'^login$', LoginView.as_view(), name='user_login'),

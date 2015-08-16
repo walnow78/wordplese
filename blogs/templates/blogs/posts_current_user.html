@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block section %}
+
+   <h3>Últimos post publicados por {{ user }} </h3>
+
+    {% if post_list|length > 0 %}
+        {% include 'blogs/posts_loop.html' with post_list=object_list %}
+    {% else %}
+       Actualmente no tienes publicado ningun post
+    {% endif %}
+{% endblock %}

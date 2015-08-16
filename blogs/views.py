@@ -6,8 +6,16 @@ from django.http import HttpResponseNotFound
 from django.shortcuts import render
 from blogs.models import Post
 from django.utils.decorators import method_decorator
-from django.views.generic import View
+from django.views.generic import View, ListView
 from django.contrib.auth.models import User
+
+class PostCurrentUser(ListView):
+    model = Post
+    template_name ='blogs/posts_current_user.html'
+
+    def get_queryset(self):
+        queryset = super(PostCurrentUser, self).get_queryset()
+        return queryset.filter(owner=self.request.user)
 
 class HomeView(View):
 
