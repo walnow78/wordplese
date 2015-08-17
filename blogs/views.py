@@ -13,7 +13,6 @@ from django.db.models import Q
 class PostsQuerySet(object):
     def get_posts_queryset(self, request):
         queryset = Post.objects.all().filter(owner__username=self.kwargs['user'])
-
         if not request.user.is_authenticated():
             posts = queryset.filter(publication_date__isnull=False).order_by('-publication_date')
         elif request.user.is_superuser:
@@ -23,12 +22,24 @@ class PostsQuerySet(object):
         return posts
 
 
+class PostsDetailQuerySet(object):
+    def get_posts_detail_queryset(self, request):
+        queryset = Post.objects.filter(owner__username=self.kwargs['user'], pk=self.kwargs['pk'])
+        if not request.user.is_authenticated():
+            posts = queryset.filter(publication_date__isnull=False).order_by('-publication_date')
+        elif request.user.is_superuser:
+            posts = queryset
+        else:
+            posts = queryset.filter(Q(owner=request.user) | Q(publication_date__isnull=False))
+        return posts
+
+
+
 class PostCurrentUser(ListView, PostsQuerySet):
     model = Post
     template_name ='blogs/posts_current_user.html'
 
     def get_queryset(self):
-        #queryset = super(PostCurrentUser, self).get_queryset()
         return self.get_posts_queryset(self.request)
 
 class HomeView(View):

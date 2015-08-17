@@ -3,7 +3,7 @@ from django.contrib import admin
 from blogs.views import HomeView, PostDetailView, BlogListView, BlogListDetailView, CreatePostView, PostCurrentUser
 from users.views import LoginView, LogoutView, SignupView
 from users.api import UserListAPI, UserDetailAPI
-from blogs.api import PostListAPI, PostDetailAPI
+from blogs.api import BlogUserApi, PostDetailAPI, BlogListAPI
 from django.contrib.auth.decorators import login_required
 
 urlpatterns = [
@@ -18,11 +18,11 @@ urlpatterns = [
     # Posts
     url(r'^new-post$', CreatePostView.as_view(), name='new_post'),
 
-    # Posts API
+    # Blogs API
+    url(r'^api/1.0/blogs/$', BlogListAPI.as_view(), name='post_list_api'),
+    url(r'^api/1.0/blogs/(?P<user>[A-Za-z0-9]+)$', BlogUserApi.as_view(), name='blog_user_api'),
+    url(r'^api/1.0/blogs/(?P<user>[A-Za-z0-9]+)/(?P<pk>[0-9]+)$', PostDetailAPI.as_view(), name='post_detail_api'),
 
-    url(r'^api/1.0/posts/$', PostListAPI.as_view(), name='post_list_api'),
-    url(r'^api/1.0/posts/(?P<pk>[0-9]+)$', PostDetailAPI.as_view(), name='post_detail_api'),
-    url(r'^api/1.0/posts/(?P<user>[A-Za-z0-9]+)$', PostListAPI.as_view(), name='blog_user_list'),
     # Users URL
 
     url(r'^login$', LoginView.as_view(), name='user_login'),
