@@ -1,6 +1,6 @@
 {% for post in post_list %}
     {{ post.title }}
-    <a href="{% url 'post' post.pk %}">
+    <a href="{% url 'post_detail' post.owner post.pk %}">
         <img class="img-rounded" src="{{ post.url }}" alt="{{ post.url }}" height="50">
     </a>
     {{ post.resume }}

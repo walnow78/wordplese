@@ -7,7 +7,7 @@
     {% if blogs|length > 0 %}
         {% for blog in blogs %}
             <ul>
-                <a href="{% url 'blog_list_detail' blog %}">{{ blog.first_name }}</a>
+                <a href="{% url 'blog_user' blog %}">{{ blog.first_name }}</a>
             </ul>
         {% endfor %}
     {% else %}

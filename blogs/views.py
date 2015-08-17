@@ -8,14 +8,28 @@ from blogs.models import Post
 from django.utils.decorators import method_decorator
 from django.views.generic import View, ListView
 from django.contrib.auth.models import User
+from django.db.models import Q
 
-class PostCurrentUser(ListView):
+class PostsQuerySet(object):
+    def get_posts_queryset(self, request):
+        queryset = Post.objects.all().filter(owner__username=self.kwargs['user'])
+
+        if not request.user.is_authenticated():
+            posts = queryset.filter(publication_date__isnull=False).order_by('-publication_date')
+        elif request.user.is_superuser:
+            posts = queryset
+        else:
+            posts = queryset.filter(Q(owner=request.user) | Q(publication_date__isnull=False))
+        return posts
+
+
+class PostCurrentUser(ListView, PostsQuerySet):
     model = Post
     template_name ='blogs/posts_current_user.html'
 
     def get_queryset(self):
-        queryset = super(PostCurrentUser, self).get_queryset()
-        return queryset.filter(owner=self.request.user)
+        #queryset = super(PostCurrentUser, self).get_queryset()
+        return self.get_posts_queryset(self.request)
 
 class HomeView(View):
 
@@ -29,7 +43,7 @@ class HomeView(View):
         return render(request, 'blogs/home.html', context)
 
 class PostDetailView(View):
-    def get(self, request, pk):
+    def get(self, request, user, pk):
         # optimizo la consulta para que traiga tanto el post como el usuario haciendo el join a la bd
         possible_post = Post.objects.filter(pk=pk).select_related('owner')
 
