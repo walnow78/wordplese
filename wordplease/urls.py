@@ -4,7 +4,7 @@ from blogs.views import HomeView, PostDetailView, BlogListView, BlogListDetailVi
 from rest_framework.routers import DefaultRouter
 from users.views import LoginView, LogoutView, SignupView
 from users.api import UserViewSet
-from blogs.api import BlogUserApi, PostDetailAPI, BlogListAPI
+from blogs.api import PostListAPI, PostDetailAPI, BlogListAPI, CreatePostViewSet
 from django.contrib.auth.decorators import login_required
 
 # APIRouter
@@ -27,7 +27,7 @@ urlpatterns = [
 
     # Blogs API
     url(r'^api/1.0/blogs/$', BlogListAPI.as_view(), name='post_list_api'),
-    url(r'^api/1.0/blogs/(?P<user>[A-Za-z0-9]+)$', BlogUserApi.as_view(), name='blog_user_api'),
+    url(r'^api/1.0/blogs/(?P<user>[A-Za-z0-9]+)$', PostListAPI.as_view(), name='blog_user_api'),
     url(r'^api/1.0/blogs/(?P<user>[A-Za-z0-9]+)/(?P<pk>[0-9]+)$', PostDetailAPI.as_view(), name='post_detail_api'),
 
     # Users URL

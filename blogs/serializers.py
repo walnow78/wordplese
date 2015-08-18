@@ -8,7 +8,7 @@ class BlogSerializer(serializers.ModelSerializer):
         model = User
         fields = ('username',)
 
-class PostSerializer(serializers.ModelSerializer):
+class PostDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
@@ -19,7 +19,7 @@ class PostSerializer(serializers.ModelSerializer):
 
         read_only_fields = ('owner', 'id', 'created_at', 'modified_at')
 
-class PostListSerializer(PostSerializer):
+class PostListSerializer(PostDetailSerializer):
 
-    class Meta(PostSerializer.Meta):
+    class Meta(PostDetailSerializer.Meta):
         fields = ('id', 'title', 'created_at')
