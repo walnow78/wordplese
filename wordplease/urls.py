@@ -1,10 +1,17 @@
 from django.conf.urls import include, url
 from django.contrib import admin
 from blogs.views import HomeView, PostDetailView, BlogListView, BlogListDetailView, CreatePostView, PostCurrentUser
+from rest_framework.routers import DefaultRouter
 from users.views import LoginView, LogoutView, SignupView
-from users.api import UserListAPI, UserDetailAPI
+from users.api import UserViewSet
 from blogs.api import BlogUserApi, PostDetailAPI, BlogListAPI
 from django.contrib.auth.decorators import login_required
+
+# APIRouter
+
+router = DefaultRouter()
+
+router.register(r'api/1.0/users', UserViewSet, base_name='user')
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
@@ -31,6 +38,5 @@ urlpatterns = [
 
     # User API
 
-    url(r'^api/1.0/users/$', UserListAPI.as_view(), name='user_list_api'),
-    url(r'^api/1.0/users/(?P<pk>[0-9]+)$', UserDetailAPI.as_view(), name='user_detail_api'),
+    url(r'', include(router.urls)),
 ]
