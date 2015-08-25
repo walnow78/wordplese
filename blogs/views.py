@@ -116,7 +116,7 @@ class CreatePostView(View):
             new_post = form.save()
             form = PostForm()
             success_message = 'Guardado con exito!'
-            success_message += '<a href="{0}">'.format(reverse('post', args=[new_post.pk]))
+            success_message += '<a href="{0}">'.format(reverse('post_detail', args=[new_post.owner, new_post.pk]))
             success_message += 'Ver post'
             success_message += '</a>'
 

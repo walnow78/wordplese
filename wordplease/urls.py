@@ -30,8 +30,9 @@ urlpatterns = [
     url(r'^api/1.0/blogs/(?P<user>[A-Za-z0-9]+)$', PostListAPI.as_view(), name='blog_user_api'),
     url(r'^api/1.0/blogs/(?P<user>[A-Za-z0-9]+)/(?P<pk>[0-9]+)$', PostDetailAPI.as_view(), name='post_detail_api'),
 
-    # Users URL
+    url(r'^api/1.0/post/new-post$', CreatePostViewSet, name='new_post_api'),
 
+    # Users URL
     url(r'^login$', LoginView.as_view(), name='user_login'),
     url(r'^logout$', LogoutView.as_view(), name='user_logout'),
     url(r'^signup$', SignupView.as_view(), name='user_signup'),
